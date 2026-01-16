@@ -228,6 +228,15 @@ function entryPath(options: ProjectOptions): string {
         : `src/${options.mainFileName}`;
 }
 
+function mcpRuntime(options: ProjectOptions): "python" | "node" {
+    return options.language === "python" ? "python" : "node";
+}
+
+function mcpEntry(options: ProjectOptions): string {
+    if (options.language === "python") return options.mainFileName;
+    return `dist/${options.mainFileName.replace(/\.ts$/i, ".js")}`;
+}
+
 function escapeYamlString(value: unknown): string {
     const s = String(value ?? "");
     const escaped = s.replace(/"/g, '\\"');
@@ -253,7 +262,7 @@ function projectReadme(options: ProjectOptions): string {
 
     return `# ${projectName}\n\n${description || ""}\n\n## Author\n\n${
         author || ""
-    }\n\n## Language\n\n${langLabel}\n\n## Entry\n\n- ${entry}\n\n## MCP Tools\n\n- get_current_time: Returns the current time (UTC, ISO 8601)\n\n${runSection}\n\n## Config\n\n- config.yml\n`;
+    }\n\n## Language\n\n${langLabel}\n\n## Entry\n\n- ${entry}\n\n## MCP Tools\n\n- get_current_time: Returns the current time (UTC, ISO 8601)\n\n${runSection}\n\n## Config\n\n- config.yml (see: mcp.runtime / mcp.entry)\n`;
 }
 
 function packagingPackageJson(options: ProjectOptions): string {
@@ -278,9 +287,15 @@ function configYml(options: ProjectOptions): string {
     return [
         `name: ${escapeYamlString(projectName)}`,
         `description: ${escapeYamlString(description)}`,
-        `author: ${escapeYamlString(author)}`,
+        `icon: ${escapeYamlString("")}`,
         `language: ${escapeYamlString(language)}`,
-        `entry: ${escapeYamlString(entryPath(options))}`,
+        `author: ${escapeYamlString(author)}`,
+        `mcp:`,
+        `  runtime: ${escapeYamlString(mcpRuntime(options))}`,
+        `  entry: ${escapeYamlString(mcpEntry(options))}`,
+        `  cwd: ${escapeYamlString(".")}`,
+        `  env: {}`,
+        `  args: []`,
         "",
     ].join("\n");
 }
