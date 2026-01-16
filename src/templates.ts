@@ -457,7 +457,7 @@ function nodePackageJson(options: ProjectOptions): string {
         private: true,
         type: "module",
         scripts: {
-            build: `esbuild src/${mainFileName} --bundle --platform=node --format=esm --target=es2022 --packages=external --sourcemap --outfile=${distEntry}`,
+            build: `esbuild src/${mainFileName} --bundle --platform=node --format=esm --target=es2022 --sourcemap --outfile=${distEntry}`,
             start: `node ${distEntry}`,
             package: "node scripts/package.mjs",
         },

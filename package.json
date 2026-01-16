@@ -1,6 +1,6 @@
 {
     "name": "create-glosc",
-    "version": "0.4.2",
+    "version": "0.4.3",
     "description": "Scaffold Glosc projects (Python/TypeScript) via npm create",
     "author": "glosc-ai",
     "license": "MIT",
