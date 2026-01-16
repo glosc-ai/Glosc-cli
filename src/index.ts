@@ -129,6 +129,12 @@ function normalizeMainFileName(
     return `${base}${defaultExt}`;
 }
 
+function normalizeProjectName(value: unknown): string {
+    return String(value || "")
+        .trim()
+        .replace(/\s+/g, "-");
+}
+
 function getDefaultAuthor(): string {
     const candidates = [
         process.env.GIT_AUTHOR_NAME,
@@ -168,7 +174,7 @@ async function run(): Promise<void> {
         const language = normalizeLanguage(args.language) || "typescript";
 
         const options: ProjectOptions = {
-            projectName: String(args.projectName).trim(),
+            projectName: normalizeProjectName(args.projectName),
             description: String(
                 args.description || "A brief description of your project"
             ).trim(),
@@ -276,7 +282,7 @@ async function run(): Promise<void> {
     }
 
     const options: ProjectOptions = {
-        projectName: String(response.projectName).trim(),
+        projectName: normalizeProjectName(response.projectName),
         description: String(response.description || "").trim(),
         author: String(response.author || "").trim(),
         language: response.language as Language,
