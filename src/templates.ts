@@ -15,6 +15,12 @@ export type ProjectFile = {
     content: string;
 };
 
+function entryPath(options: ProjectOptions): string {
+    return options.language === "python"
+        ? options.mainFileName
+        : `src/${options.mainFileName}`;
+}
+
 function escapeYamlString(value: unknown): string {
     const s = String(value ?? "");
     const escaped = s.replace(/"/g, '\\"');
@@ -32,7 +38,7 @@ function projectReadme(options: ProjectOptions): string {
         options;
     const langLabel = language === "python" ? "Python" : "TypeScript";
 
-    const entry = `src/${mainFileName}`;
+    const entry = entryPath(options);
     const runSection =
         language === "python"
             ? `## Run (Python)\n\n\n\n1) Install deps\n\n\n\n\`\`\`sh\npython -m pip install -r requirements.txt\n\`\`\`\n\n\n\n2) Run the MCP server (stdio)\n\n\n\n\`\`\`sh\npython ${entry}\n\`\`\`\n\n\n\nThis server speaks MCP over stdio. Connect using an MCP client (e.g. an editor integration).\n`
@@ -51,7 +57,7 @@ function configYml(options: ProjectOptions): string {
         `description: ${escapeYamlString(description)}`,
         `author: ${escapeYamlString(author)}`,
         `language: ${escapeYamlString(language)}`,
-        `entry: ${escapeYamlString(`src/${mainFileName}`)}`,
+        `entry: ${escapeYamlString(entryPath(options))}`,
         "",
     ].join("\n");
 }
@@ -163,7 +169,7 @@ export function getProjectFiles(options: ProjectOptions): ProjectFile[] {
 
     if (options.language === "python") {
         files.push({
-            relativePath: `src/${options.mainFileName}`,
+            relativePath: options.mainFileName,
             content: pythonMain(options),
         });
         files.push({

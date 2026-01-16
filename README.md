@@ -31,8 +31,7 @@ License: MIT
 ```sh
 
 <your-project-name>/
-├── src/                # 源代码目录
-│   ├── main.py         # MCP Server 入口 (Python, stdio)
+├── main.py             # MCP Server 入口 (Python, stdio)
 ├── pyproject.toml      # 项目配置
 ├── requirements.txt    # 依赖文件
 ├── config.yml          # 配置文件
@@ -59,7 +58,7 @@ Python：
 
 ```sh
 python -m pip install -r requirements.txt
-python src/main.py
+python main.py
 ```
 
 TypeScript：
