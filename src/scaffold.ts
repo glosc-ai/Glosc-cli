@@ -1,5 +1,6 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
+import { spawnSync } from "node:child_process";
 import { getProjectFiles, type ProjectOptions } from "./templates";
 
 async function pathExists(p: string): Promise<boolean> {
@@ -23,6 +24,28 @@ async function writeFileEnsuringDir(
     await fs.writeFile(filePath, content, "utf8");
 }
 
+function tryInitGitRepo(targetRoot: string): void {
+    try {
+        const version = spawnSync("git", ["--version"], {
+            cwd: targetRoot,
+            stdio: "ignore",
+            shell: false,
+        });
+
+        if (version.status !== 0) return;
+
+        const init = spawnSync("git", ["init"], {
+            cwd: targetRoot,
+            stdio: "ignore",
+            shell: false,
+        });
+
+        if (init.status !== 0) return;
+    } catch {
+        // best-effort: do not block scaffolding if git isn't available
+    }
+}
+
 export async function scaffoldProject(options: ProjectOptions): Promise<void> {
     const targetRoot = path.resolve(process.cwd(), options.projectName);
 
@@ -38,6 +61,8 @@ export async function scaffoldProject(options: ProjectOptions): Promise<void> {
         const absPath = path.join(targetRoot, file.relativePath);
         await writeFileEnsuringDir(absPath, file.content);
     }
+
+    tryInitGitRepo(targetRoot);
 
     // eslint-disable-next-line no-console
     console.log(`\nCreated project at: ${targetRoot}`);

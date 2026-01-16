@@ -69,6 +69,19 @@ npm run build
 npm start
 ```
 
+### 发布到 Glosc Store（打包 ZIP）
+
+CLI 创建的项目会默认：
+
+- 生成 `.gitignore`
+- 尝试自动执行 `git init`（如果本机已安装 Git）
+
+打包时会**只包含未被 `.gitignore` 忽略**的文件，输出到 `dist/*.zip`：
+
+```sh
+npm run package
+```
+
 ### 本地开发（维护此 CLI）
 
 ```sh
