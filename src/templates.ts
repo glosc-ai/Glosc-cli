@@ -442,7 +442,7 @@ function pythonPyproject({
         ? `authors = [{ name = "${safeAuthor}" }]\n`
         : "";
 
-    return `# Minimal pyproject.toml (adjust as needed)\n\n[project]\nname = "${safeName}"\nversion = "0.1.0"\ndescription = ""\n${authorsLine}requires-python = ">=3.10"\ndependencies = [\n  "mcp",\n]\n\n[build-system]\nrequires = ["setuptools>=61.0"]\nbuild-backend = "setuptools.build_meta"\n`;
+    return `# Minimal pyproject.toml (adjust as needed)\n\n[project]\nname = "${safeName}"\nversion = "0.1.0"\ndescription = ""\n${authorsLine}requires-python = ">=3.10"\ndependencies = [\n  "mcp",\n]\n`;
 }
 
 function nodePackageJson(options: ProjectOptions): string {

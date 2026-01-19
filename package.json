@@ -1,6 +1,6 @@
 {
     "name": "create-glosc",
-    "version": "0.4.3",
+    "version": "0.5.2",
     "description": "Scaffold Glosc projects (Python/TypeScript) via npm create",
     "author": "glosc-ai",
     "license": "MIT",
@@ -16,8 +16,7 @@
         "build": "tsc -p tsconfig.json",
         "start": "npm run build && node bin/index.js",
         "lint": "npm run build --silent",
-        "prepublishOnly": "npm run build",
-        "publish": "npm publish"
+        "prepublishOnly": "npm run build"
     },
     "dependencies": {
         "prompts": "^2.4.2"
